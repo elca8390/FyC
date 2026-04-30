@@ -204,13 +204,17 @@ main {
 
 .hero {
   position: relative;
-  min-height: 96vh;
+  min-height: 100svh;
   display: grid;
-  align-items: center;
-  padding: 28px clamp(18px, 4vw, 64px) 74px;
+  place-items: end center;
+  padding: 28px clamp(18px, 4vw, 64px) clamp(70px, 12vh, 118px);
   color: #fffaf2;
-  background-position: center;
+  background-position: center 34%;
   background-size: cover;
+}
+
+.heroCouple {
+  background-color: #4c3929;
 }
 
 .hero::after {
@@ -227,8 +231,8 @@ main {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(38, 30, 22, 0.76), rgba(38, 30, 22, 0.38) 48%, rgba(38, 30, 22, 0.14)),
-    linear-gradient(0deg, rgba(38, 30, 22, 0.52), rgba(38, 30, 22, 0.12));
+    linear-gradient(180deg, rgba(31, 24, 18, 0.16) 0%, rgba(31, 24, 18, 0.24) 42%, rgba(31, 24, 18, 0.74) 100%),
+    linear-gradient(90deg, rgba(31, 24, 18, 0.28), rgba(31, 24, 18, 0.06) 48%, rgba(31, 24, 18, 0.28));
 }
 
 .nav {
@@ -256,7 +260,8 @@ main {
 .heroContent {
   position: relative;
   z-index: 1;
-  width: min(720px, 100%);
+  width: min(940px, 96vw);
+  text-align: center;
   animation: heroIn 1100ms ease both;
 }
 
@@ -283,11 +288,13 @@ p {
 }
 
 h1 {
-  margin-bottom: 12px;
+  margin-bottom: 16px;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(4.1rem, 12vw, 9rem);
+  font-size: clamp(2.75rem, 9vw, 7.8rem);
   font-weight: 500;
   line-height: 0.9;
+  white-space: nowrap;
+  text-shadow: 0 12px 34px rgba(0, 0, 0, 0.42);
 }
 
 .names {
@@ -297,8 +304,10 @@ h1 {
 }
 
 .dateLine {
-  margin-bottom: 24px;
+  margin-bottom: 0;
   color: rgba(255, 250, 242, 0.9);
+  font-size: clamp(1rem, 2.2vw, 1.35rem);
+  letter-spacing: 0.16em;
   text-transform: capitalize;
 }
 
@@ -370,10 +379,12 @@ h1 {
 }
 
 .introSection,
+.countdownSection,
 .detailsSection,
+.loveStorySection,
 .dressCodeSection,
 .venueSection,
-.rsvpSection {
+.confirmSection {
   padding: clamp(70px, 11vw, 132px) clamp(18px, 5vw, 80px);
 }
 
@@ -399,7 +410,7 @@ h1 {
 .introCopy h2,
 .sectionHeading h2,
 .venueCopy h2,
-.rsvpSection h2 {
+.confirmSection h2 {
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(2.35rem, 6vw, 5rem);
   font-weight: 500;
@@ -409,8 +420,9 @@ h1 {
 .introCopy p,
 .sectionHeading p,
 .venueCopy p,
-.rsvpSection p,
-.timeline p,
+.confirmSection p,
+.eventCard p,
+.storyContent p,
 .coupleCards p {
   color: var(--muted);
   line-height: 1.7;
@@ -423,7 +435,7 @@ h1 {
 }
 
 .coupleCards article,
-.timeline article,
+.eventCard,
 .locationCard {
   border: 1px solid var(--line);
   background: rgba(255, 255, 255, 0.44);
@@ -431,15 +443,73 @@ h1 {
 }
 
 .coupleCards article {
-  min-height: 260px;
-  padding: clamp(22px, 4vw, 38px);
+  overflow: hidden;
+  min-height: 420px;
+  padding: 0;
+}
+
+.coupleCards article img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 0.9;
+  object-fit: cover;
+}
+
+.coupleCards article span,
+.coupleCards article h3,
+.coupleCards article p {
+  margin-left: clamp(22px, 4vw, 38px);
+  margin-right: clamp(22px, 4vw, 38px);
+}
+
+.coupleCards article span {
+  display: block;
+  margin-top: 24px;
 }
 
 .coupleCards h3,
-.timeline h3 {
+.eventCard h3,
+.storyContent h3 {
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(1.8rem, 4vw, 3rem);
   font-weight: 500;
+}
+
+.countdownSection {
+  background: #f8efe4;
+}
+
+.countdownLarge {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+  gap: 16px;
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.countdownBox {
+  display: grid;
+  place-items: center;
+  min-height: 170px;
+  padding: 24px;
+  border: 1px solid rgba(185, 139, 67, 0.26);
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 18px 50px rgba(97, 70, 40, 0.12);
+}
+
+.countdownBox strong {
+  color: var(--blue);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3rem, 7vw, 5.6rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.countdownBox span {
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
 }
 
 .detailsSection {
@@ -457,33 +527,124 @@ h1 {
   font-size: 1.2rem;
 }
 
-.timeline {
+.eventGrid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 4vw, 36px);
+  max-width: 1120px;
+  margin: 0 auto;
 }
 
-.timeline article {
+.eventCard {
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.54);
+}
+
+.eventCard img {
+  width: 100%;
+  aspect-ratio: 1.35;
+  object-fit: cover;
+  display: block;
+}
+
+.eventCard div {
+  padding: clamp(22px, 4vw, 34px);
+}
+
+.eventCard time {
+  display: block;
+  margin-bottom: 18px;
+  color: var(--blue);
+  font-weight: 700;
+}
+
+.eventCard h3 {
+  margin-bottom: 16px;
+}
+
+.loveStorySection {
+  background: #faf2e8;
+}
+
+.loveStorySection .sectionHeading h2,
+.confirmSection .sectionHeading h2 {
+  color: #39533b;
+  font-style: italic;
+}
+
+.storyTimeline {
   position: relative;
-  min-height: 240px;
-  padding: 28px;
+  display: grid;
+  gap: 54px;
+  max-width: 1020px;
+  margin: 0 auto;
 }
 
-.timeline article::before {
+.storyTimeline::before {
   content: "";
   position: absolute;
   top: 0;
-  left: 28px;
-  width: 56px;
-  height: 4px;
-  background: var(--clay);
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: rgba(185, 139, 67, 0.24);
 }
 
-.timeline time {
+.storyMoment {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(28px, 6vw, 72px);
+  align-items: center;
+}
+
+.storyMoment::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #d58d52;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 12px #faf2e8;
+}
+
+.storyMoment:nth-child(even) .storyImage {
+  order: 2;
+}
+
+.storyImage img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
   display: block;
-  margin-bottom: 24px;
-  color: var(--blue);
-  font-weight: 700;
+  box-shadow: 0 22px 54px rgba(92, 65, 39, 0.18);
+}
+
+.storyContent {
+  max-width: 430px;
+}
+
+.storyMoment:nth-child(odd) .storyContent {
+  justify-self: end;
+  text-align: right;
+}
+
+.storyContent span {
+  display: block;
+  margin-bottom: 12px;
+  color: #d58d52;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-style: italic;
+}
+
+.storyContent h3 {
+  margin-bottom: 14px;
+  color: #112f42;
+  font-style: italic;
 }
 
 .venueSection {
@@ -561,25 +722,113 @@ h1 {
   border: 1px solid rgba(45, 41, 35, 0.24);
 }
 
-.rsvpSection {
+.confirmSection {
+  background: #fbf8f4;
+}
+
+.rsvpForm {
   display: grid;
-  place-items: center;
-  min-height: 560px;
-  text-align: center;
-  background:
-    linear-gradient(rgba(45, 41, 35, 0.74), rgba(45, 41, 35, 0.68)),
-    url("./assets/wedding-hero.png") center / cover;
-  color: #fffaf2;
+  gap: 24px;
+  width: min(100%, 640px);
+  margin: 0 auto;
+  padding: clamp(24px, 5vw, 48px);
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.86);
+  box-shadow: 0 26px 80px rgba(142, 92, 85, 0.16);
 }
 
-.rsvpSection div {
-  max-width: 720px;
-  flex-direction: column;
+.rsvpForm label,
+.rsvpForm legend {
+  color: #112f42;
+  font-weight: 600;
+}
+
+.rsvpForm input,
+.rsvpForm textarea {
+  width: 100%;
+  margin-top: 10px;
+  border: 1px solid #d6e0e8;
+  border-radius: 14px;
+  background: #f8fbfd;
+  color: #112f42;
+  font: inherit;
+  font-size: 1rem;
+  padding: 17px 18px;
+  outline: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.rsvpForm textarea {
+  resize: vertical;
+}
+
+.rsvpForm input:focus,
+.rsvpForm textarea:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 4px rgba(185, 139, 67, 0.16);
+}
+
+.rsvpForm fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.attendanceOptions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.attendanceOptions label {
+  position: relative;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  min-height: 62px;
+  padding: 12px;
+  border: 1px solid #d6e0e8;
+  border-radius: 14px;
+  background: #fff;
+  cursor: pointer;
 }
 
-.rsvpSection p {
-  color: rgba(255, 250, 242, 0.8);
+.attendanceOptions input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+
+.attendanceOptions label:has(input:checked) {
+  border-color: var(--gold);
+  background: #fff8ea;
+}
+
+.rsvpForm button {
+  min-height: 62px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #b98b43, #a65f4d);
+  color: #fffaf2;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 16px 34px rgba(166, 95, 77, 0.26);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.rsvpForm button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 42px rgba(166, 95, 77, 0.34);
+}
+
+.formThanks {
+  margin: 0;
+  text-align: center;
+  color: #39533b;
+  font-weight: 700;
 }
 
 [data-reveal] {
@@ -683,15 +932,42 @@ h1 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .countdownLarge,
+  .eventGrid,
+  .attendanceOptions {
+    grid-template-columns: 1fr;
+  }
+
   .introSection,
   .venueSection {
     grid-template-columns: 1fr;
   }
 
   .coupleCards,
-  .timeline,
   .colorGrid {
     grid-template-columns: 1fr;
+  }
+
+  .storyTimeline::before {
+    left: 18px;
+  }
+
+  .storyMoment {
+    grid-template-columns: 1fr;
+    padding-left: 42px;
+  }
+
+  .storyMoment::before {
+    left: 18px;
+  }
+
+  .storyMoment:nth-child(even) .storyImage {
+    order: 0;
+  }
+
+  .storyMoment:nth-child(odd) .storyContent {
+    justify-self: start;
+    text-align: left;
   }
 
   .venueImage,
@@ -718,7 +994,7 @@ h1 {
   }
 
   h1 {
-    font-size: clamp(3.25rem, 18vw, 4.6rem);
+    font-size: clamp(2.45rem, 11vw, 4.1rem);
   }
 
   .heroActions a {
@@ -726,7 +1002,7 @@ h1 {
   }
 
   .coupleCards article,
-  .timeline article {
+  .eventCard {
     min-height: auto;
   }
 }

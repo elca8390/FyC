@@ -1,6 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
-import heroImage from "./assets/wedding-hero.png";
+import camilaProfile from "./assets/camila-profile.png";
+import coupleHero from "./assets/couple-hero.png";
+import ceremonyImage from "./assets/event-ceremony.png";
+import freddyProfile from "./assets/freddy-profile.png";
 import receptionImage from "./assets/wedding-reception.png";
+import storyAdventure from "./assets/story-adventure.png";
+import storyFuture from "./assets/story-future.png";
+import storyMet from "./assets/story-met.png";
 
 const weddingDate = new Date("2026-08-15T15:00:00-05:00");
 
@@ -16,8 +22,6 @@ const ceremonyMaps =
   "https://www.google.com/maps/search/?api=1&query=Parroquia+San+Antonio+de+Padua+Tarqui+Huila";
 const receptionMaps =
   "https://www.google.com/maps/search/?api=1&query=Centro+recreacional+Piscinas+municipal+Tarqui+Huila";
-const calendarUrl =
-  "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Boda+Freddy+y+Camila&dates=20260815T200000Z/20260816T040000Z&details=Invitacion+a+la+boda+de+Freddy+Sotto+Capera+y+Camila+Cerquera+Sandoval.&location=Parroquia+San+Antonio+de+Padua,+Tarqui,+Huila";
 
 function getRemainingTime() {
   const diff = weddingDate.getTime() - Date.now();
@@ -55,33 +59,6 @@ function useRevealAnimation() {
   }, []);
 }
 
-function Countdown() {
-  const [time, setTime] = useState(getRemainingTime());
-
-  useEffect(() => {
-    const timer = window.setInterval(() => setTime(getRemainingTime()), 1000);
-    return () => window.clearInterval(timer);
-  }, []);
-
-  const units = [
-    ["Días", time.days],
-    ["Horas", time.hours],
-    ["Min", time.minutes],
-    ["Seg", time.seconds],
-  ];
-
-  return (
-    <div className="countdown" aria-label="Cuenta regresiva para la boda">
-      {units.map(([label, value]) => (
-        <div className="countdownItem" key={label}>
-          <strong>{String(value).padStart(2, "0")}</strong>
-          <span>{label}</span>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function SectionHeading({
   eyebrow,
   title,
@@ -97,6 +74,38 @@ function SectionHeading({
       <h2>{title}</h2>
       {children && <p>{children}</p>}
     </div>
+  );
+}
+
+function CountdownSection() {
+  const [time, setTime] = useState(getRemainingTime());
+
+  useEffect(() => {
+    const timer = window.setInterval(() => setTime(getRemainingTime()), 1000);
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const units = [
+    ["Días", time.days],
+    ["Horas", time.hours],
+    ["Minutos", time.minutes],
+    ["Segundos", time.seconds],
+  ];
+
+  return (
+    <section className="countdownSection">
+      <SectionHeading eyebrow="Falta poco" title="Cuenta regresiva">
+        Cada segundo nos acerca al día en que celebraremos este amor en Tarqui, Huila.
+      </SectionHeading>
+      <div className="countdownLarge" aria-label="Cuenta regresiva para la boda">
+        {units.map(([label, value]) => (
+          <div className="countdownBox" data-reveal key={label}>
+            <strong>{String(value).padStart(2, "0")}</strong>
+            <span>{label}</span>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -142,6 +151,103 @@ function InvitationEnvelope() {
   );
 }
 
+function LoveStorySection() {
+  const moments = [
+    {
+      year: "2020",
+      title: "Cuando nos conocimos",
+      image: storyMet,
+      text: "Un encuentro sencillo se convirtió en el comienzo de una historia que empezó a crecer con paciencia, alegría y muchas conversaciones.",
+    },
+    {
+      year: "2022",
+      title: "Nuestro primer camino",
+      image: storyAdventure,
+      text: "Entre viajes, proyectos y nuevos planes descubrimos que caminar juntos hacía más bonitos los días ordinarios.",
+    },
+    {
+      year: "2026",
+      title: "Hacia el altar",
+      image: storyFuture,
+      text: "Hoy damos un paso lleno de gratitud, rodeados de las personas que han acompañado nuestro amor.",
+    },
+  ];
+
+  return (
+    <section className="loveStorySection">
+      <SectionHeading eyebrow="Nuestra historia" title="Historia de amor">
+        Un pequeño recorrido por algunos momentos que nos trajeron hasta este día.
+      </SectionHeading>
+      <div className="storyTimeline">
+        {moments.map((moment) => (
+          <article className="storyMoment" data-reveal key={moment.year}>
+            <div className="storyImage">
+              <img src={moment.image} alt={`Imagen temporal de ${moment.title.toLowerCase()}`} />
+            </div>
+            <div className="storyContent">
+              <span>{moment.year}</span>
+              <h3>{moment.title}</h3>
+              <p>{moment.text}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function RsvpSection() {
+  const [submitted, setSubmitted] = useState(false);
+
+  return (
+    <section className="confirmSection" id="confirmar">
+      <SectionHeading eyebrow="Confirma tu asistencia" title="Confirma tu Asistencia">
+        Tu presencia hará este día aún más especial.
+      </SectionHeading>
+      <form
+        className="rsvpForm"
+        data-reveal
+        onSubmit={(event) => {
+          event.preventDefault();
+          setSubmitted(true);
+        }}
+      >
+        <label>
+          Nombre completo *
+          <input name="name" placeholder="Tu nombre" required />
+        </label>
+
+        <fieldset>
+          <legend>¿Podrás asistir? *</legend>
+          <div className="attendanceOptions">
+            <label>
+              <input type="radio" name="attendance" value="si" required />
+              <span>Sí, asistiré</span>
+            </label>
+            <label>
+              <input type="radio" name="attendance" value="no" />
+              <span>No podré asistir</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <label>
+          Número de asistentes, incluyéndote *
+          <input name="guests" type="number" min="1" placeholder="Indica el número de asistentes" required />
+        </label>
+
+        <label>
+          Mensaje para los novios
+          <textarea name="message" placeholder="Escribe un mensaje especial..." rows={4} />
+        </label>
+
+        <button type="submit">Confirmar Asistencia</button>
+        {submitted && <p className="formThanks">Gracias. Tu respuesta quedó registrada en esta vista.</p>}
+      </form>
+    </section>
+  );
+}
+
 function App() {
   useRevealAnimation();
 
@@ -159,30 +265,15 @@ function App() {
   return (
     <main>
       <InvitationEnvelope />
-      <section className="hero" style={{ backgroundImage: `url(${heroImage})` }}>
+      <section className="hero heroCouple" style={{ backgroundImage: `url(${coupleHero})` }}>
         <div className="heroOverlay" />
-        <nav className="nav" aria-label="Secciones de la invitación">
-          <a href="#detalles">Detalles</a>
-          <a href="#vestimenta">Vestimenta</a>
-          <a href="#ubicacion">Ubicación</a>
-        </nav>
-
         <div className="heroContent">
-          <p className="saveDate">Reserva la fecha</p>
           <h1>Freddy & Camila</h1>
-          <p className="names">Freddy Sotto Capera y Camila Cerquera Sandoval</p>
           <p className="dateLine">{formattedDate}</p>
-          <Countdown />
-          <div className="heroActions">
-            <a className="primaryButton" href={calendarUrl} target="_blank" rel="noreferrer">
-              Agregar al calendario
-            </a>
-            <a className="ghostButton" href="#ubicacion">
-              Ver ubicaciones
-            </a>
-          </div>
         </div>
       </section>
+
+      <CountdownSection />
 
       <section className="introSection">
         <div className="introCopy" data-reveal>
@@ -195,11 +286,13 @@ function App() {
         </div>
         <div className="coupleCards" aria-label="Datos de la pareja">
           <article data-reveal>
+            <img src={freddyProfile} alt="Imagen temporal de Freddy" />
             <span>Él</span>
             <h3>Freddy</h3>
             <p>Ingeniero civil, constructor de proyectos, certezas y futuros con buenos cimientos.</p>
           </article>
           <article data-reveal>
+            <img src={camilaProfile} alt="Imagen temporal de Camila" />
             <span>Ella</span>
             <h3>Camila</h3>
             <p>Ingeniera agrícola, sensible a la tierra, a los detalles y a lo que florece con paciencia.</p>
@@ -207,25 +300,28 @@ function App() {
         </div>
       </section>
 
+      <LoveStorySection />
+
       <section className="detailsSection" id="detalles">
-        <SectionHeading eyebrow="Programa" title="Un día para celebrar">
-          La ceremonia será en Tarqui, Huila, y después nos encontraremos para brindar, cenar y bailar.
+        <SectionHeading eyebrow="Programa" title="Ceremonia y recepción">
+          Ambos eventos se realizarán en el municipio de Tarqui, Huila.
         </SectionHeading>
-        <div className="timeline">
-          <article data-reveal>
-            <time>3:00 p. m.</time>
-            <h3>Ceremonia religiosa</h3>
-            <p>Parroquial San Antonio de Padua, municipio de Tarqui.</p>
+        <div className="eventGrid">
+          <article className="eventCard" data-reveal>
+            <img src={ceremonyImage} alt="Imagen temporal de ceremonia religiosa" />
+            <div>
+              <time>3:00 p. m.</time>
+              <h3>Ceremonia religiosa</h3>
+              <p>Parroquial San Antonio de Padua, Tarqui, Huila.</p>
+            </div>
           </article>
-          <article data-reveal>
-            <time>5:30 p. m.</time>
-            <h3>Recepción</h3>
-            <p>Centro recreacional Piscinas municipal Tarqui, Huila.</p>
-          </article>
-          <article data-reveal>
-            <time>7:00 p. m.</time>
-            <h3>Celebración</h3>
-            <p>Cena, brindis, música y una noche para guardar en la memoria.</p>
+          <article className="eventCard" data-reveal>
+            <img src={receptionImage} alt="Imagen temporal de recepción junto a una piscina" />
+            <div>
+              <time>5:30 p. m.</time>
+              <h3>Recepción</h3>
+              <p>Centro recreacional Piscinas municipal Tarqui, Huila.</p>
+            </div>
           </article>
         </div>
       </section>
@@ -236,7 +332,7 @@ function App() {
         </div>
         <div className="venueCopy" data-reveal>
           <span className="script">Tarqui, Huila</span>
-          <h2>Ceremonia y recepción</h2>
+          <h2>Ubicaciones</h2>
           <div className="locationCard">
             <strong>Parroquial San Antonio de Padua</strong>
             <p>Ceremonia religiosa</p>
@@ -264,18 +360,7 @@ function App() {
         </div>
       </section>
 
-      <section className="rsvpSection">
-        <div data-reveal>
-          <span className="script">Nos vemos pronto</span>
-          <h2>15 de agosto de 2026</h2>
-          <p>
-            Esta tarjeta queda lista para reemplazar las imágenes temporales por las fotos oficiales de Freddy y Camila.
-          </p>
-          <a className="primaryButton" href="#detalles">
-            Revisar detalles
-          </a>
-        </div>
-      </section>
+      <RsvpSection />
     </main>
   );
 }
