@@ -109,44 +109,64 @@ function CountdownSection() {
   );
 }
 
-function InvitationEnvelope() {
+function WeddingIntro() {
   const [isVisible, setIsVisible] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     document.body.classList.add("intro-lock");
-    const timer = window.setTimeout(() => {
-      setIsVisible(false);
-      document.body.classList.remove("intro-lock");
-    }, 5600);
-
     return () => {
-      window.clearTimeout(timer);
       document.body.classList.remove("intro-lock");
     };
   }, []);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => {
+      setIsVisible(false);
+      document.body.classList.remove("intro-lock");
+    }, 5200);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [isOpen]);
 
   if (!isVisible) {
     return null;
   }
 
   return (
-    <div className="envelopeIntro" aria-hidden="true">
-      <div className="envelopeGlow" />
-      <div className="envelope">
-        <div className="envelopeBack" />
-        <div className="letterPeek">
+    <div className={`weddingIntro ${isOpen ? "is-open" : ""}`}>
+      <div className="introPhoto" style={{ backgroundImage: `url(${coupleHero})` }} />
+      <button
+        className="introEnvelope"
+        type="button"
+        aria-label="Abrir invitación de Freddy y Camila"
+        onClick={() => setIsOpen(true)}
+      >
+        <span className="introEnvelopeBack" />
+        <span className="introLetter">
           <span>Freddy & Camila</span>
-        </div>
-        <div className="envelopeFlap" />
-        <div className="envelopeFace">
-          <div className="envelopeLeft" />
-          <div className="envelopeRight" />
-          <div className="envelopeBottom" />
-        </div>
-        <div className="waxSeal">
-          <span>FyC</span>
-        </div>
+          <small>15 · Agosto · 2026</small>
+        </span>
+        <span className="introEnvelopeFlap" />
+        <span className="introEnvelopeFace">
+          <span className="introEnvelopeLeft" />
+          <span className="introEnvelopeRight" />
+          <span className="introEnvelopeBottom" />
+        </span>
+        <span className="introWaxSeal">FyC</span>
+      </button>
+      <div className="introText">
+        <p>Nuestra boda</p>
+        <h2>Freddy & Camila</h2>
+        <time>15 · Agosto · 2026</time>
       </div>
+      <div className="introHint">Haz clic para abrir la invitación</div>
     </div>
   );
 }
@@ -264,7 +284,7 @@ function App() {
 
   return (
     <main>
-      <InvitationEnvelope />
+      <WeddingIntro />
       <section className="hero heroCouple" style={{ backgroundImage: `url(${coupleHero})` }}>
         <div className="heroOverlay" />
         <div className="heroContent">

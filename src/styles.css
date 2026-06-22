@@ -48,158 +48,332 @@ main {
   overflow: hidden;
 }
 
-.envelopeIntro {
+.weddingIntro {
   position: fixed;
   inset: 0;
   z-index: 30;
   display: grid;
   place-items: center;
-  padding: 28px;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(244, 210, 153, 0.22), transparent 34%),
-    linear-gradient(135deg, #2d241b 0%, #5f4732 44%, #1d1814 100%);
-  perspective: 1200px;
-  animation: introFade 900ms ease 4700ms forwards;
+  overflow: hidden;
+  color: #fffaf2;
+  background: #17110d;
+  transition: opacity 800ms ease, visibility 800ms ease, transform 800ms ease;
 }
 
-.envelopeGlow {
-  position: absolute;
-  width: min(76vw, 740px);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(242, 201, 120, 0.18), transparent 66%);
-  filter: blur(4px);
-  animation: glowPulse 3600ms ease-in-out infinite;
-}
-
-.envelope {
-  position: relative;
-  width: min(78vw, 560px);
-  aspect-ratio: 1.55;
-  transform-style: preserve-3d;
-  animation: envelopeFloat 4800ms ease-in-out both;
-}
-
-.envelopeBack,
-.envelopeFace,
-.envelopeFlap,
-.letterPeek {
+.weddingIntro::before,
+.weddingIntro::after {
+  content: "";
   position: absolute;
   inset: 0;
+  pointer-events: none;
 }
 
-.envelopeBack {
-  border-radius: 8px;
+.weddingIntro::before {
+  z-index: 7;
+  opacity: 0;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 32%),
-    linear-gradient(160deg, #ead4ae, #c9a56d);
-  box-shadow: 0 36px 90px rgba(0, 0, 0, 0.44);
+    radial-gradient(circle at 50% 46%, transparent 0 28%, rgba(15, 10, 7, 0.36) 62%, rgba(15, 10, 7, 0.86) 100%);
 }
 
-.letterPeek {
-  left: 8%;
-  right: 8%;
-  top: 7%;
+.weddingIntro::after {
+  z-index: 8;
+  opacity: 0;
+  background:
+    linear-gradient(180deg, #080604 0 13%, transparent 13% 87%, #080604 87% 100%);
+  transform: scaleY(0.55);
+}
+
+.weddingIntro.is-open {
+  animation: cinematicExit 2200ms ease 3950ms forwards;
+}
+
+.weddingIntro.is-open::before {
+  animation: filmVignette 2600ms ease 2750ms forwards;
+}
+
+.weddingIntro.is-open::after {
+  animation: filmGlow 2600ms ease 3300ms forwards;
+}
+
+.introPhoto {
+  position: absolute;
+  inset: 0;
+  background-position: center 34%;
+  background-size: cover;
+  opacity: 0.22;
+  transform: scale(1.04);
+  filter: blur(6px) saturate(0.7);
+  transition: opacity 1600ms ease, filter 1600ms ease, transform 5200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.introPhoto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(20, 15, 12, 0.35), rgba(20, 15, 12, 0.66)),
+    radial-gradient(circle at 50% 42%, transparent 0 26%, rgba(20, 15, 12, 0.54) 70%);
+}
+
+.weddingIntro.is-open .introPhoto {
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0) saturate(0.92);
+}
+
+.introEnvelope {
+  position: absolute;
+  z-index: 4;
+  width: min(84vw, 650px);
+  aspect-ratio: 1.58;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+  perspective: 1200px;
+  overflow: hidden;
+  filter: drop-shadow(0 34px 40px rgba(0, 0, 0, 0.42));
+  animation: envelopeIdle 3600ms ease-in-out infinite;
+  transition: opacity 600ms ease, transform 900ms ease;
+  transform: rotate(-7deg);
+}
+
+.introEnvelopeBack,
+.introEnvelopeFace,
+.introEnvelopeFlap,
+.introLetter {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+.introEnvelopeBack {
+  z-index: 1;
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 16% 18%, rgba(103, 68, 33, 0.16), transparent 18%),
+    radial-gradient(circle at 74% 74%, rgba(87, 55, 27, 0.15), transparent 22%),
+    repeating-linear-gradient(18deg, rgba(79, 52, 27, 0.055) 0 1px, transparent 1px 7px),
+    repeating-linear-gradient(96deg, rgba(255, 255, 255, 0.07) 0 2px, transparent 2px 10px),
+    linear-gradient(158deg, #ead9b7 0%, #d0b27a 58%, #b58c55 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(80, 50, 24, 0.28),
+    inset 0 0 42px rgba(87, 55, 27, 0.28);
+}
+
+.introLetter {
+  z-index: 2;
+  left: 14%;
+  right: 14%;
+  top: 13%;
   bottom: 18%;
   display: grid;
   place-items: start center;
+  gap: 8px;
   padding-top: 26px;
   border-radius: 6px;
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.55), transparent 46%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.62), transparent 46%),
     #f8efe0;
   color: #8b6540;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1rem, 3.8vw, 1.8rem);
+  transform: translateY(86%);
+  transition: transform 1600ms cubic-bezier(0.22, 0.84, 0.32, 1);
+  box-shadow: 0 -12px 26px rgba(80, 50, 24, 0.08);
+}
+
+.introLetter span {
+  font-size: clamp(1.1rem, 4vw, 2.1rem);
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transform: translateY(34%);
-  animation: letterRise 2300ms ease 1850ms forwards;
 }
 
-.envelopeFace {
+.introLetter small {
+  font-size: clamp(0.68rem, 1.8vw, 0.9rem);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.introEnvelopeFace {
+  z-index: 3;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 4px;
+  background:
+    repeating-linear-gradient(14deg, rgba(76, 50, 25, 0.045) 0 1px, transparent 1px 8px),
+    linear-gradient(160deg, #ead9b7, #caa66b);
+  box-shadow:
+    inset 0 0 0 1px rgba(78, 49, 23, 0.2),
+    inset 0 -22px 34px rgba(89, 55, 25, 0.17);
 }
 
-.envelopeLeft,
-.envelopeRight,
-.envelopeBottom {
+.introEnvelopeLeft,
+.introEnvelopeRight,
+.introEnvelopeBottom {
   position: absolute;
   inset: 0;
+  display: block;
 }
 
-.envelopeLeft {
-  clip-path: polygon(0 0, 51% 51%, 0 100%);
-  background: linear-gradient(125deg, #d7b77f, #bd935a);
-}
-
-.envelopeRight {
-  clip-path: polygon(100% 0, 49% 51%, 100% 100%);
-  background: linear-gradient(235deg, #e4c58e, #c59b5f);
-}
-
-.envelopeBottom {
-  clip-path: polygon(0 100%, 50% 45%, 100% 100%);
-  background: linear-gradient(0deg, #b8874e, #e1be86);
-}
-
-.envelopeFlap {
-  z-index: 4;
-  clip-path: polygon(0 0, 50% 58%, 100% 0);
+.introEnvelopeLeft {
+  clip-path: polygon(0 0, 50% 52%, 0 100%);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.14), transparent),
-    #d4ad73;
-  border-radius: 8px 8px 0 0;
-  transform-origin: top;
-  animation: flapOpen 2300ms cubic-bezier(0.22, 0.84, 0.32, 1) 1200ms forwards;
-  backface-visibility: hidden;
+    linear-gradient(129deg, transparent 47.8%, rgba(73, 46, 22, 0.55) 49.1%, rgba(255, 244, 210, 0.42) 50.5%, transparent 52%),
+    linear-gradient(125deg, rgba(225, 200, 151, 0.88), rgba(181, 139, 76, 0.52));
 }
 
-.waxSeal {
-  position: absolute;
+.introEnvelopeRight {
+  clip-path: polygon(100% 0, 50% 52%, 100% 100%);
+  background:
+    linear-gradient(231deg, transparent 47.8%, rgba(73, 46, 22, 0.55) 49.1%, rgba(255, 244, 210, 0.38) 50.5%, transparent 52%),
+    linear-gradient(235deg, rgba(235, 210, 160, 0.88), rgba(185, 145, 84, 0.52));
+}
+
+.introEnvelopeBottom {
+  clip-path: polygon(0 100%, 50% 48%, 100% 100%);
+  background:
+    linear-gradient(12deg, transparent 42%, rgba(85, 53, 25, 0.36) 43.5%, rgba(255, 242, 207, 0.35) 45%, transparent 47%),
+    linear-gradient(-12deg, transparent 42%, rgba(85, 53, 25, 0.36) 43.5%, rgba(255, 242, 207, 0.3) 45%, transparent 47%),
+    linear-gradient(0deg, #b98f56, #e1c391);
+}
+
+.introEnvelopeFlap {
   z-index: 5;
+  clip-path: polygon(0 0, 50% 59%, 100% 0);
+  border-radius: 4px 4px 0 0;
+  background:
+    linear-gradient(177deg, transparent 50%, rgba(76, 46, 20, 0.34) 51%, transparent 53%),
+    repeating-linear-gradient(20deg, rgba(83, 54, 28, 0.052) 0 1px, transparent 1px 8px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 64%),
+    #dfc493;
+  transform-origin: top;
+  transition: transform 1600ms cubic-bezier(0.22, 0.84, 0.32, 1);
+  backface-visibility: hidden;
+  box-shadow: inset 0 -12px 18px rgba(76, 46, 20, 0.22);
+}
+
+.introWaxSeal {
+  position: absolute;
+  z-index: 6;
   left: 50%;
-  top: 49%;
+  top: 51.5%;
   display: grid;
   place-items: center;
-  width: clamp(74px, 15vw, 112px);
+  width: clamp(52px, 10vw, 74px);
   aspect-ratio: 1;
   border-radius: 50%;
-  color: #f9dcc1;
+  color: rgba(255, 219, 183, 0.72);
   background:
-    radial-gradient(circle at 34% 28%, rgba(255, 238, 210, 0.24), transparent 22%),
-    radial-gradient(circle at 72% 76%, rgba(72, 22, 18, 0.28), transparent 26%),
-    #7f2f25;
+    radial-gradient(circle at 32% 24%, rgba(255, 219, 183, 0.24), transparent 22%),
+    radial-gradient(circle at 72% 76%, rgba(58, 12, 8, 0.32), transparent 28%),
+    radial-gradient(circle, #9b3b23 0 54%, #682014 56% 100%);
   box-shadow:
-    inset 0 4px 14px rgba(255, 236, 205, 0.18),
-    inset 0 -8px 18px rgba(55, 14, 13, 0.38),
-    0 14px 30px rgba(49, 20, 10, 0.36);
+    inset 0 4px 12px rgba(255, 210, 172, 0.2),
+    inset 0 -7px 14px rgba(46, 10, 7, 0.5),
+    0 8px 16px rgba(55, 22, 12, 0.36);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(0.8rem, 2.2vw, 1.15rem);
+  letter-spacing: 0.04em;
   transform: translate(-50%, -50%);
-  animation: sealBreak 1550ms ease 1250ms forwards;
+  transition: opacity 650ms ease, transform 850ms ease;
 }
 
-.waxSeal::before,
-.waxSeal::after {
+.introWaxSeal::before,
+.introWaxSeal::after {
   content: "";
   position: absolute;
-  inset: -5px;
-  border-radius: 47% 53% 52% 48%;
-  border: 2px solid rgba(255, 220, 178, 0.22);
+  inset: -4px;
+  border: 2px solid rgba(255, 189, 142, 0.2);
+  border-radius: 45% 55% 50% 50%;
 }
 
-.waxSeal::after {
+.introWaxSeal::after {
   inset: 10px;
   border-color: rgba(61, 13, 12, 0.28);
 }
 
-.waxSeal span {
-  position: relative;
-  z-index: 1;
+.introEnvelope:hover,
+.introEnvelope:focus-visible {
+  transform: rotate(-7deg) translateY(-6px);
+}
+
+.weddingIntro.is-open .introEnvelope {
+  animation: none;
+  opacity: 0;
+  transform: rotate(-7deg) translateY(-18px) scale(0.96);
+  pointer-events: none;
+  transition-delay: 3100ms;
+}
+
+.weddingIntro.is-open .introEnvelopeFlap {
+  transform: rotateX(178deg);
+}
+
+.weddingIntro.is-open .introLetter {
+  transform: translateY(12%);
+}
+
+.weddingIntro.is-open .introWaxSeal {
+  opacity: 0;
+  transform: translate(-50%, -70%) scale(0.58) rotate(-18deg);
+}
+
+.introText {
+  position: absolute;
+  z-index: 6;
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(26px);
+  pointer-events: none;
+}
+
+.weddingIntro.is-open .introText {
+  animation: textReveal 1000ms ease 3150ms forwards;
+}
+
+.introText p,
+.introText time,
+.introHint {
+  margin: 0;
+  font-size: clamp(0.78rem, 1.8vw, 1rem);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+}
+
+.introText p {
+  color: #f2c978;
+}
+
+.introText h2 {
+  margin: 0;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.15rem, 3.5vw, 1.8rem);
-  letter-spacing: 0.04em;
-  text-shadow: 0 1px 0 rgba(38, 8, 8, 0.42);
+  font-size: clamp(3.2rem, 10vw, 8.6rem);
+  font-weight: 500;
+  line-height: 0.92;
+  white-space: nowrap;
+  text-shadow: 0 18px 42px rgba(0, 0, 0, 0.48);
+}
+
+.introText time {
+  color: rgba(255, 250, 242, 0.84);
+}
+
+.introHint {
+  position: absolute;
+  z-index: 5;
+  bottom: clamp(52px, 9vh, 92px);
+  color: rgba(255, 250, 242, 0.8);
+  opacity: 0.78;
+  text-align: center;
+  animation: hintPulse 2200ms ease-in-out infinite;
+}
+
+.weddingIntro.is-open .introHint {
+  opacity: 0;
+  transition: opacity 500ms ease;
 }
 
 .hero {
@@ -853,6 +1027,142 @@ h1 {
   }
 }
 
+@keyframes photoBloom {
+  0% {
+    opacity: 0;
+    transform: scale(1.1);
+    filter: blur(8px) saturate(0.76);
+  }
+  28% {
+    opacity: 1;
+    filter: blur(0) saturate(0.92);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1.02);
+    filter: blur(0) saturate(0.92);
+  }
+}
+
+@keyframes envelopeIdle {
+  0%,
+  100% {
+    transform: rotate(-7deg) translateY(0) scale(1);
+  }
+  50% {
+    transform: rotate(-7deg) translateY(-8px) scale(1.01);
+  }
+}
+
+@keyframes hintPulse {
+  0%,
+  100% {
+    opacity: 0.58;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.92;
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes curtainOpen {
+  to {
+    transform: scaleX(0);
+  }
+}
+
+@keyframes frameLineX {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes frameLineY {
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes monogramIntro {
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes monogramLift {
+  to {
+    opacity: 0;
+    transform: translateY(-74px) scale(0.72);
+  }
+}
+
+@keyframes textReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cinematicExit {
+  0% {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    filter: blur(0);
+  }
+  35% {
+    opacity: 0.92;
+    transform: scale(1.012);
+    filter: blur(1.5px);
+  }
+  72% {
+    opacity: 0.38;
+    transform: scale(1.025);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(1.035);
+    filter: blur(10px);
+  }
+}
+
+@keyframes filmVignette {
+  0% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.38;
+  }
+  100% {
+    opacity: 0.08;
+  }
+}
+
+@keyframes filmGlow {
+  0% {
+    opacity: 0;
+    background:
+      radial-gradient(circle at 50% 52%, rgba(255, 250, 242, 0), rgba(255, 250, 242, 0) 52%);
+    transform: scale(0.92);
+  }
+  45% {
+    opacity: 0.18;
+    background:
+      radial-gradient(circle at 50% 52%, rgba(255, 250, 242, 0.36), rgba(255, 250, 242, 0) 58%);
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    background:
+      radial-gradient(circle at 50% 52%, rgba(255, 250, 242, 0.22), rgba(255, 250, 242, 0) 68%);
+    transform: scale(1.08);
+  }
+}
+
 @keyframes envelopeFloat {
   0% {
     opacity: 0;
@@ -977,12 +1287,8 @@ h1 {
 }
 
 @media (max-width: 520px) {
-  .envelope {
-    width: min(88vw, 420px);
-  }
-
-  .letterPeek {
-    padding-top: 18px;
+  .introText h2 {
+    font-size: clamp(2.65rem, 13vw, 4.2rem);
   }
 
   .hero {
