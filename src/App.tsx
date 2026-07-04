@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
-import camilaProfile from "./assets/camila-profile.png";
+import camilaProfile from "./assets/Ella.jpg";
 import coupleHero from "./assets/Encabezado FyC.jpg";
 import ceremonyImage from "./assets/event-ceremony.png";
-import freddyProfile from "./assets/freddy-profile.png";
+import freddyProfile from "./assets/El.jpg";
 import receptionImage from "./assets/wedding-reception.png";
 import storyAdventure from "./assets/story-adventure.png";
 import storyFuture from "./assets/story-future.png";
@@ -276,27 +276,19 @@ function App() {
 
       <section className="introSection">
         <div className="introCopy" data-reveal>
-          <span className="script">Con alegría</span>
-          <h2>queremos celebrar este sí junto a ustedes</h2>
-          <p>
-            Entre caminos, siembras, planos y sueños compartidos, Freddy y Camila
-            inician una nueva etapa. Su presencia hará parte de este recuerdo.
-          </p>
+          <span className="script introTagline">Dos almas, un mismo destino y un amor que crece cada dia ♥ ♥ ♥</span>
         </div>
         <div className="coupleCards" aria-label="Datos de la pareja">
           <article data-reveal>
             <img src={freddyProfile} alt="Imagen temporal de Freddy" />
             <span>Él</span>
-            <h3>Freddy</h3>
-            <p>Ingeniero civil, constructor de proyectos, certezas y futuros con buenos cimientos.</p>
           </article>
           <article data-reveal>
             <img src={camilaProfile} alt="Imagen temporal de Camila" />
             <span>Ella</span>
-            <h3>Camila</h3>
-            <p>Ingeniera agrícola, sensible a la tierra, a los detalles y a lo que florece con paciencia.</p>
           </article>
         </div>
+        <p className="script introTagline introClosing">Hoy elegimos escribir juntos el capitulo más importante de nuestra historia</p>
       </section>
 
       <CountdownSection />

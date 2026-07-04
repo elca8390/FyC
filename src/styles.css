@@ -494,6 +494,16 @@ h1 {
   font-size: 1.45rem;
 }
 
+.introTagline {
+  font-size: clamp(1.65rem, 3vw, 2.15rem);
+}
+
+.introMessage {
+  display: block;
+  margin: 0 auto;
+  color: var(--gold);
+}
+
 .introCopy h2,
 .sectionHeading h2,
 .venueCopy h2,
@@ -502,6 +512,16 @@ h1 {
   font-size: clamp(2.35rem, 6vw, 5rem);
   font-weight: 500;
   line-height: 1;
+}
+
+.introCopy h2 {
+  font-size: clamp(2rem, 4.8vw, 4rem);
+}
+
+.introClosing {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .introCopy p,
@@ -513,6 +533,10 @@ h1 {
 .coupleCards p {
   color: var(--muted);
   line-height: 1.7;
+}
+
+.introCopy p.introMessage {
+  color: var(--gold);
 }
 
 .coupleCards {
@@ -531,6 +555,8 @@ h1 {
 }
 
 .coupleCards article {
+  display: grid;
+  grid-template-rows: auto auto;
   overflow: hidden;
   min-height: 420px;
   padding: 0;
@@ -551,8 +577,14 @@ h1 {
 }
 
 .coupleCards article span {
-  display: block;
-  margin-top: 24px;
+  display: inline-block;
+  margin-top: 0;
+  padding: 10px 14px;
+  font-family: "Edwardian Script ITC", Georgia, "Times New Roman", serif;
+  font-size: 1.45rem;
+  line-height: 1;
+  text-align: left;
+  justify-self: start;
 }
 
 .coupleCards h3,
