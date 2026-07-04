@@ -1,12 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
 import camilaProfile from "./assets/camila-profile.png";
-import coupleHero from "./assets/couple-hero.png";
+import coupleHero from "./assets/Encabezado FyC.jpg";
 import ceremonyImage from "./assets/event-ceremony.png";
 import freddyProfile from "./assets/freddy-profile.png";
 import receptionImage from "./assets/wedding-reception.png";
 import storyAdventure from "./assets/story-adventure.png";
 import storyFuture from "./assets/story-future.png";
 import storyMet from "./assets/story-met.png";
+import introVideo from "./assets/Vídeo Invitación de Boda Plantas Elegante Sencillo Minimalista Limpio Verde y Blanco.mp4";
 
 const weddingDate = new Date("2026-08-15T15:00:00-05:00");
 
@@ -109,44 +110,44 @@ function CountdownSection() {
   );
 }
 
-function InvitationEnvelope() {
+function InvitationIntroVideo() {
   const [isVisible, setIsVisible] = useState(true);
+  const [isFading, setIsFading] = useState(false);
 
   useEffect(() => {
     document.body.classList.add("intro-lock");
-    const timer = window.setTimeout(() => {
-      setIsVisible(false);
-      document.body.classList.remove("intro-lock");
-    }, 5600);
+    const fallbackTimer = window.setTimeout(() => startFade(), 11000);
 
     return () => {
-      window.clearTimeout(timer);
+      window.clearTimeout(fallbackTimer);
       document.body.classList.remove("intro-lock");
     };
   }, []);
+
+  function startFade() {
+    setIsFading(true);
+    window.setTimeout(() => {
+      setIsVisible(false);
+      document.body.classList.remove("intro-lock");
+    }, 900);
+  }
 
   if (!isVisible) {
     return null;
   }
 
   return (
-    <div className="envelopeIntro" aria-hidden="true">
-      <div className="envelopeGlow" />
-      <div className="envelope">
-        <div className="envelopeBack" />
-        <div className="letterPeek">
-          <span>Freddy & Camila</span>
-        </div>
-        <div className="envelopeFlap" />
-        <div className="envelopeFace">
-          <div className="envelopeLeft" />
-          <div className="envelopeRight" />
-          <div className="envelopeBottom" />
-        </div>
-        <div className="waxSeal">
-          <span>FyC</span>
-        </div>
-      </div>
+    <div className={`videoIntro${isFading ? " is-fading" : ""}`} aria-hidden="true">
+      <video
+        className="introVideo"
+        src={introVideo}
+        autoPlay
+        muted
+        playsInline
+        preload="auto"
+        onEnded={startFade}
+        onError={startFade}
+      />
     </div>
   );
 }
@@ -264,7 +265,7 @@ function App() {
 
   return (
     <main>
-      <InvitationEnvelope />
+      <InvitationIntroVideo />
       <section className="hero heroCouple" style={{ backgroundImage: `url(${coupleHero})` }}>
         <div className="heroOverlay" />
         <div className="heroContent">
@@ -272,8 +273,6 @@ function App() {
           <p className="dateLine">{formattedDate}</p>
         </div>
       </section>
-
-      <CountdownSection />
 
       <section className="introSection">
         <div className="introCopy" data-reveal>
@@ -299,6 +298,8 @@ function App() {
           </article>
         </div>
       </section>
+
+      <CountdownSection />
 
       <LoveStorySection />
 
