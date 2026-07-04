@@ -518,6 +518,12 @@ h1 {
   font-size: clamp(2rem, 4.8vw, 4rem);
 }
 
+.sectionHeading h2.countdownTitle {
+  font-family: "Edwardian Script ITC", Georgia, "Times New Roman", serif;
+  font-size: clamp(2.3rem, 5.29vw, 4.37rem);
+  letter-spacing: 0.03em;
+}
+
 .introClosing {
   max-width: 720px;
   margin: 0 auto;
@@ -618,7 +624,7 @@ h1 {
 }
 
 .countdownBox strong {
-  color: var(--blue);
+  color: #c77b52;
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(3rem, 7vw, 5.6rem);
   font-weight: 500;

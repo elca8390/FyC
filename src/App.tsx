@@ -8,6 +8,7 @@ import storyAdventure from "./assets/story-adventure.png";
 import storyFuture from "./assets/story-future.png";
 import storyMet from "./assets/story-met.png";
 import introVideo from "./assets/Vídeo Invitación de Boda Plantas Elegante Sencillo Minimalista Limpio Verde y Blanco.mp4";
+import weddingSong from "./assets/Carín León - Desde Que te Tengo.mp3";
 
 const weddingDate = new Date("2026-08-15T15:00:00-05:00");
 
@@ -63,16 +64,18 @@ function useRevealAnimation() {
 function SectionHeading({
   eyebrow,
   title,
+  titleClassName,
   children,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
+  titleClassName?: string;
   children?: React.ReactNode;
 }) {
   return (
     <div className="sectionHeading" data-reveal>
-      <span>{eyebrow}</span>
-      <h2>{title}</h2>
+      {eyebrow && <span>{eyebrow}</span>}
+      <h2 className={titleClassName}>{title}</h2>
       {children && <p>{children}</p>}
     </div>
   );
@@ -95,9 +98,7 @@ function CountdownSection() {
 
   return (
     <section className="countdownSection">
-      <SectionHeading eyebrow="Falta poco" title="Cuenta regresiva">
-        Cada segundo nos acerca al día en que celebraremos este amor en Tarqui, Huila.
-      </SectionHeading>
+      <SectionHeading titleClassName="countdownTitle" title="Con mucha ilusion, contamos los dias para celebrar juntos" />
       <div className="countdownLarge" aria-label="Cuenta regresiva para la boda">
         {units.map(([label, value]) => (
           <div className="countdownBox" data-reveal key={label}>
@@ -150,6 +151,10 @@ function InvitationIntroVideo() {
       />
     </div>
   );
+}
+
+function BackgroundMusic() {
+  return <audio src={weddingSong} autoPlay loop preload="auto" />;
 }
 
 function LoveStorySection() {
@@ -265,6 +270,7 @@ function App() {
 
   return (
     <main>
+      <BackgroundMusic />
       <InvitationIntroVideo />
       <section className="hero heroCouple" style={{ backgroundImage: `url(${coupleHero})` }}>
         <div className="heroOverlay" />
