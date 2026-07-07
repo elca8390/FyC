@@ -1,12 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import camilaProfile from "./assets/Ella.jpg";
+import camilaProfile from "./assets/Ella.optimized.jpg";
 import coupleHero from "./assets/Encabezado FyC.jpg";
-import ceremonyImage from "./assets/Iglesia.jpeg";
-import freddyProfile from "./assets/El.jpg";
-import receptionImage from "./assets/Recepcion.jpeg";
-import storyAdventure from "./assets/FyC 2.png";
-import storyFuture from "./assets/FyC 3.jpeg";
-import storyMet from "./assets/FyC 1.png";
+import ceremonyImage from "./assets/Iglesia.optimized.jpg";
+import freddyProfile from "./assets/El.optimized.jpg";
+import receptionImage from "./assets/Recepcion.optimized.jpg";
+import storyAdventure from "./assets/FyC 2.optimized.jpg";
+import storyFuture from "./assets/FyC 3.optimized.jpg";
+import storyMet from "./assets/FyC 1.optimized.jpg";
 import introVideo from "./assets/Vídeo Invitación de Boda Plantas Elegante Sencillo Minimalista Limpio Verde y Blanco.mp4";
 import weddingSong from "./assets/Carín León - Desde Que te Tengo.mp3";
 
@@ -15,9 +15,7 @@ const weddingDate = new Date("2026-08-15T15:00:00-05:00");
 const forbiddenColors = [
   { name: "Blanco", value: "#f8f6ef" },
   { name: "Negro", value: "#101010" },
-  { name: "Rojo", value: "#b83232" },
-  { name: "Verde", value: "#3f7d4a" },
-  { name: "Amarillo", value: "#f4c542" },
+  { name: "Dorado", value: "#d8bd83" },
 ];
 
 const ceremonyMaps = "https://www.google.com/maps/search/?api=1&query=2.113857991981589,-75.82555015466646";
@@ -36,6 +34,10 @@ function getRemainingTime() {
     minutes: Math.floor((diff / (1000 * 60)) % 60),
     seconds: Math.floor((diff / 1000) % 60),
   };
+}
+
+function capitalizeFirstLetter(text: string) {
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 function useRevealAnimation() {
@@ -96,7 +98,7 @@ function CountdownSection() {
 
   return (
     <section className="countdownSection">
-      <SectionHeading titleClassName="countdownTitle" title="Con mucha ilusion, contamos los dias para celebrar juntos" />
+      <SectionHeading titleClassName="countdownTitle" title="Con mucha ilusión, contamos los días para celebrar juntos" />
       <div className="countdownLarge" aria-label="Cuenta regresiva para la boda">
         {units.map(([label, value]) => (
           <div className="countdownBox" data-reveal key={label}>
@@ -153,6 +155,7 @@ function InvitationIntroVideo() {
 
 function BackgroundMusic() {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const isMountedRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
 
   async function playMusic() {
@@ -164,13 +167,18 @@ function BackgroundMusic() {
 
     try {
       await audio.play();
-      setIsPlaying(true);
+      if (isMountedRef.current) {
+        setIsPlaying(true);
+      }
     } catch {
-      setIsPlaying(false);
+      if (isMountedRef.current) {
+        setIsPlaying(false);
+      }
     }
   }
 
   useEffect(() => {
+    isMountedRef.current = true;
     void playMusic();
 
     const playAfterInteraction = () => {
@@ -184,6 +192,7 @@ function BackgroundMusic() {
     });
 
     return () => {
+      isMountedRef.current = false;
       interactionEvents.forEach((eventName) => {
         window.removeEventListener(eventName, playAfterInteraction);
       });
@@ -221,8 +230,8 @@ function BackgroundMusic() {
         className={`musicButton${isPlaying ? " is-playing" : ""}`}
         type="button"
         onClick={toggleMusic}
-        aria-label={isPlaying ? "Pausar musica" : "Reproducir musica"}
-        title={isPlaying ? "Pausar musica" : "Reproducir musica"}
+        aria-label={isPlaying ? "Pausar música" : "Reproducir música"}
+        title={isPlaying ? "Pausar música" : "Reproducir música"}
       >
         <span aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span>
       </button>
@@ -236,19 +245,19 @@ function LoveStorySection() {
       year: "2020",
       title: "Cuando nos conocimos",
       image: storyMet,
-      text: "cuando el destino nos cruzó en los pasillos de la universidad. Compartimos algunas clases sin imaginar que, años después, construiríamos una vida juntos.",
+      text: "Cuando el destino nos cruzó en los pasillos de la universidad. Compartimos algunas clases sin imaginar que, años después, construiríamos una vida juntos.",
     },
     {
       year: "2022",
       title: "Nuestro primer camino",
       image: storyAdventure,
-      text: "El camino nos puso a prueba. Durante un momento difícil descubrimos que el amor también significa cuidar, acompañar y permanecer. Fue entonces cuando, en el 2022, decidimos dar un gran paso: comenzar a vivir juntos y convertir una casa en nuestro Hogar",
+      text: "El camino nos puso a prueba. Durante un momento difícil descubrimos que el amor también significa cuidar, acompañar y permanecer. Fue entonces cuando, en el 2022, decidimos dar un gran paso: comenzar a vivir juntos y convertir una casa en nuestro hogar.",
     },
     {
       year: "2025",
       title: "Hacia el altar",
       image: storyFuture,
-      text: `el 2025 nos regaló uno de los momentos más inolvidables de nuestra historia. Frente a la majestuosidad de la Catedral de Manizales, llegó la pregunta que cambiaría nuestras vidas para siempre:
+      text: `El año 2025 nos regaló uno de los momentos más inolvidables de nuestra historia. Frente a la majestuosidad de la Catedral de Manizales, llegó la pregunta que cambiaría nuestras vidas para siempre:
 
 "¿Quieres casarte conmigo?"
 
@@ -281,10 +290,11 @@ Con un "sí" lleno de amor, alegría e ilusión, comenzó un nuevo capítulo... 
 
 function RsvpSection() {
   const [submitted, setSubmitted] = useState(false);
+  const [attendanceValue, setAttendanceValue] = useState("");
 
   return (
     <section className="confirmSection" id="confirmar">
-      <SectionHeading eyebrow="Confirma tu asistencia" title="Confirma tu Asistencia">
+      <SectionHeading title="Confirma tu asistencia">
         Tu presencia hará este día aún más especial.
       </SectionHeading>
       <form
@@ -292,40 +302,82 @@ function RsvpSection() {
         data-reveal
         onSubmit={(event) => {
           event.preventDefault();
+          const formData = new FormData(event.currentTarget);
+          const name = String(formData.get("name") ?? "");
+          const willAttend = formData.get("attendance") === "si";
+          const attendance = willAttend ? "Sí, asistiré" : "No podré asistir";
+          const guests = String(formData.get("guests") ?? "");
+          const message = String(formData.get("message") ?? "");
+          const whatsappMessage = [
+            "Confirmación de asistencia",
+            `Nombre: ${name}`,
+            `Respuesta: ${attendance}`,
+            willAttend && guests ? `Número de asistentes: ${guests}` : "",
+            message ? `Mensaje: ${message}` : "",
+          ].filter(Boolean).join("\n");
+          const whatsappUrl = `https://wa.me/573228257722?text=${encodeURIComponent(whatsappMessage)}`;
+
+          window.open(whatsappUrl, "_blank", "noopener,noreferrer");
           setSubmitted(true);
         }}
       >
-        <label>
+        <label htmlFor="rsvp-name">
           Nombre completo *
-          <input name="name" placeholder="Tu nombre" required />
+          <input id="rsvp-name" name="name" placeholder="Tu nombre" required />
         </label>
 
         <fieldset>
           <legend>¿Podrás asistir? *</legend>
           <div className="attendanceOptions">
             <label>
-              <input type="radio" name="attendance" value="si" required />
+              <input
+                id="rsvp-attendance-yes"
+                type="radio"
+                name="attendance"
+                value="si"
+                required
+                onChange={(event) => setAttendanceValue(event.currentTarget.value)}
+              />
               <span>Sí, asistiré</span>
             </label>
             <label>
-              <input type="radio" name="attendance" value="no" />
+              <input
+                id="rsvp-attendance-no"
+                type="radio"
+                name="attendance"
+                value="no"
+                onChange={(event) => setAttendanceValue(event.currentTarget.value)}
+              />
               <span>No podré asistir</span>
             </label>
           </div>
         </fieldset>
 
-        <label>
-          Número de asistentes, incluyéndote *
-          <input name="guests" type="number" min="1" placeholder="Indica el número de asistentes" required />
-        </label>
+        {attendanceValue !== "no" && (
+          <label htmlFor="rsvp-guests">
+            Número de asistentes, incluyéndote *
+            <input
+              id="rsvp-guests"
+              name="guests"
+              type="number"
+              min="1"
+              placeholder="Indica el número de asistentes"
+              required={attendanceValue === "si"}
+            />
+          </label>
+        )}
 
-        <label>
+        <label htmlFor="rsvp-message">
           Mensaje para los novios
-          <textarea name="message" placeholder="Escribe un mensaje especial..." rows={4} />
+          <textarea id="rsvp-message" name="message" placeholder="Escribe un mensaje especial..." rows={4} />
         </label>
 
         <button type="submit">Confirmar Asistencia</button>
-        {submitted && <p className="formThanks">Gracias. Tu respuesta quedó registrada en esta vista.</p>}
+        {submitted && (
+          <p className="formThanks" role="status" aria-live="polite">
+            Gracias. Tu respuesta quedó registrada en esta vista.
+          </p>
+        )}
       </form>
     </section>
   );
@@ -344,6 +396,7 @@ function App() {
       }).format(weddingDate),
     [],
   );
+  const displayDate = capitalizeFirstLetter(formattedDate);
 
   return (
     <main>
@@ -353,13 +406,13 @@ function App() {
         <div className="heroOverlay" />
         <div className="heroContent">
           <h1>Freddy & Camila</h1>
-          <p className="dateLine">{formattedDate}</p>
+          <p className="dateLine">{displayDate}</p>
         </div>
       </section>
 
       <section className="introSection">
         <div className="introCopy" data-reveal>
-          <span className="script introTagline">Dos almas, un mismo destino y un amor que crece cada dia ♥ ♥ ♥</span>
+          <span className="script introTagline">Dos almas, un mismo destino y un amor que crece cada día ♥ ♥ ♥</span>
         </div>
         <div className="coupleCards" aria-label="Datos de la pareja">
           <article data-reveal>
@@ -371,7 +424,7 @@ function App() {
             <span>Ella</span>
           </article>
         </div>
-        <p className="script introTagline introClosing">Hoy elegimos escribir juntos el capitulo más importante de nuestra historia</p>
+        <p className="script introTagline introClosing">Hoy elegimos escribir juntos el capítulo más importante de nuestra historia</p>
       </section>
 
       <CountdownSection />
@@ -388,7 +441,7 @@ function App() {
             <div>
               <time>1:30 p. m.</time>
               <h3>Ceremonia religiosa</h3>
-              <p>Parroquial San Antonio de Padua, Tarqui, Huila.</p>
+              <p>Parroquia San Antonio de Padua, Tarqui, Huila.</p>
               <a className="eventMapButton" href={ceremonyMaps} target="_blank" rel="noreferrer">
                 Abrir en Google Maps
               </a>
@@ -399,7 +452,7 @@ function App() {
             <div>
               <time>5:30 p. m.</time>
               <h3>Recepción</h3>
-              <p>Centro recreacional Piscinas municipal Tarqui, Huila.</p>
+              <p>Centro Recreacional Piscinas Municipal, Tarqui, Huila.</p>
               <a className="eventMapButton" href={receptionMaps} target="_blank" rel="noreferrer">
                 Abrir en Google Maps
               </a>
