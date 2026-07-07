@@ -1,12 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import camilaProfile from "./assets/Ella.jpg";
 import coupleHero from "./assets/Encabezado FyC.jpg";
-import ceremonyImage from "./assets/event-ceremony.png";
+import ceremonyImage from "./assets/Iglesia.jpeg";
 import freddyProfile from "./assets/El.jpg";
-import receptionImage from "./assets/wedding-reception.png";
-import storyAdventure from "./assets/story-adventure.png";
-import storyFuture from "./assets/story-future.png";
-import storyMet from "./assets/story-met.png";
+import receptionImage from "./assets/Recepcion.jpeg";
+import storyAdventure from "./assets/FyC 2.png";
+import storyFuture from "./assets/FyC 3.jpeg";
+import storyMet from "./assets/FyC 1.png";
 import introVideo from "./assets/Vídeo Invitación de Boda Plantas Elegante Sencillo Minimalista Limpio Verde y Blanco.mp4";
 import weddingSong from "./assets/Carín León - Desde Que te Tengo.mp3";
 
@@ -20,10 +20,8 @@ const forbiddenColors = [
   { name: "Amarillo", value: "#f4c542" },
 ];
 
-const ceremonyMaps =
-  "https://www.google.com/maps/search/?api=1&query=Parroquia+San+Antonio+de+Padua+Tarqui+Huila";
-const receptionMaps =
-  "https://www.google.com/maps/search/?api=1&query=Centro+recreacional+Piscinas+municipal+Tarqui+Huila";
+const ceremonyMaps = "https://www.google.com/maps/search/?api=1&query=2.113857991981589,-75.82555015466646";
+const receptionMaps = "https://www.google.com/maps/search/?api=1&query=2.1100777020088186,-75.82518778438562";
 
 function getRemainingTime() {
   const diff = weddingDate.getTime() - Date.now();
@@ -154,7 +152,82 @@ function InvitationIntroVideo() {
 }
 
 function BackgroundMusic() {
-  return <audio src={weddingSong} autoPlay loop preload="auto" />;
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  async function playMusic() {
+    const audio = audioRef.current;
+
+    if (!audio) {
+      return;
+    }
+
+    try {
+      await audio.play();
+      setIsPlaying(true);
+    } catch {
+      setIsPlaying(false);
+    }
+  }
+
+  useEffect(() => {
+    void playMusic();
+
+    const playAfterInteraction = () => {
+      void playMusic();
+    };
+
+    const interactionEvents = ["click", "touchstart", "keydown", "wheel"];
+
+    interactionEvents.forEach((eventName) => {
+      window.addEventListener(eventName, playAfterInteraction, { once: true, passive: true });
+    });
+
+    return () => {
+      interactionEvents.forEach((eventName) => {
+        window.removeEventListener(eventName, playAfterInteraction);
+      });
+    };
+  }, []);
+
+  async function toggleMusic() {
+    const audio = audioRef.current;
+
+    if (!audio) {
+      return;
+    }
+
+    if (isPlaying) {
+      audio.pause();
+      setIsPlaying(false);
+      return;
+    }
+
+    await playMusic();
+  }
+
+  return (
+    <>
+      <audio
+        ref={audioRef}
+        src={weddingSong}
+        autoPlay
+        loop
+        preload="auto"
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      />
+      <button
+        className={`musicButton${isPlaying ? " is-playing" : ""}`}
+        type="button"
+        onClick={toggleMusic}
+        aria-label={isPlaying ? "Pausar musica" : "Reproducir musica"}
+        title={isPlaying ? "Pausar musica" : "Reproducir musica"}
+      >
+        <span aria-hidden="true">{isPlaying ? "Ⅱ" : "▶"}</span>
+      </button>
+    </>
+  );
 }
 
 function LoveStorySection() {
@@ -163,25 +236,29 @@ function LoveStorySection() {
       year: "2020",
       title: "Cuando nos conocimos",
       image: storyMet,
-      text: "Un encuentro sencillo se convirtió en el comienzo de una historia que empezó a crecer con paciencia, alegría y muchas conversaciones.",
+      text: "cuando el destino nos cruzó en los pasillos de la universidad. Compartimos algunas clases sin imaginar que, años después, construiríamos una vida juntos.",
     },
     {
       year: "2022",
       title: "Nuestro primer camino",
       image: storyAdventure,
-      text: "Entre viajes, proyectos y nuevos planes descubrimos que caminar juntos hacía más bonitos los días ordinarios.",
+      text: "El camino nos puso a prueba. Durante un momento difícil descubrimos que el amor también significa cuidar, acompañar y permanecer. Fue entonces cuando, en el 2022, decidimos dar un gran paso: comenzar a vivir juntos y convertir una casa en nuestro Hogar",
     },
     {
-      year: "2026",
+      year: "2025",
       title: "Hacia el altar",
       image: storyFuture,
-      text: "Hoy damos un paso lleno de gratitud, rodeados de las personas que han acompañado nuestro amor.",
+      text: `el 2025 nos regaló uno de los momentos más inolvidables de nuestra historia. Frente a la majestuosidad de la Catedral de Manizales, llegó la pregunta que cambiaría nuestras vidas para siempre:
+
+"¿Quieres casarte conmigo?"
+
+Con un "sí" lleno de amor, alegría e ilusión, comenzó un nuevo capítulo... el que hoy queremos celebrar junto a ustedes.`,
     },
   ];
 
   return (
     <section className="loveStorySection">
-      <SectionHeading eyebrow="Nuestra historia" title="Historia de amor">
+      <SectionHeading eyebrow="Nuestra historia" title="Historia de amor" titleClassName="loveStoryTitle">
         Un pequeño recorrido por algunos momentos que nos trajeron hasta este día.
       </SectionHeading>
       <div className="storyTimeline">
@@ -309,9 +386,12 @@ function App() {
           <article className="eventCard" data-reveal>
             <img src={ceremonyImage} alt="Imagen temporal de ceremonia religiosa" />
             <div>
-              <time>3:00 p. m.</time>
+              <time>1:30 p. m.</time>
               <h3>Ceremonia religiosa</h3>
               <p>Parroquial San Antonio de Padua, Tarqui, Huila.</p>
+              <a className="eventMapButton" href={ceremonyMaps} target="_blank" rel="noreferrer">
+                Abrir en Google Maps
+              </a>
             </div>
           </article>
           <article className="eventCard" data-reveal>
@@ -320,28 +400,11 @@ function App() {
               <time>5:30 p. m.</time>
               <h3>Recepción</h3>
               <p>Centro recreacional Piscinas municipal Tarqui, Huila.</p>
+              <a className="eventMapButton" href={receptionMaps} target="_blank" rel="noreferrer">
+                Abrir en Google Maps
+              </a>
             </div>
           </article>
-        </div>
-      </section>
-
-      <section className="venueSection" id="ubicacion">
-        <div className="venueImage" data-reveal>
-          <img src={receptionImage} alt="Imagen temporal de una recepción elegante junto a una piscina" />
-        </div>
-        <div className="venueCopy" data-reveal>
-          <span className="script">Tarqui, Huila</span>
-          <h2>Ubicaciones</h2>
-          <div className="locationCard">
-            <strong>Parroquial San Antonio de Padua</strong>
-            <p>Ceremonia religiosa</p>
-            <a href={ceremonyMaps} target="_blank" rel="noreferrer">Abrir en Google Maps</a>
-          </div>
-          <div className="locationCard">
-            <strong>Centro recreacional Piscinas municipal Tarqui</strong>
-            <p>Recepción</p>
-            <a href={receptionMaps} target="_blank" rel="noreferrer">Abrir en Google Maps</a>
-          </div>
         </div>
       </section>
 
