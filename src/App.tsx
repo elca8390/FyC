@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import camilaProfile from "./assets/Ella.optimized.jpg";
+import dressCodeImage from "./assets/Cod Vestimenta transparent.png";
 import coupleHero from "./assets/Encabezado FyC.jpg";
 import ceremonyImage from "./assets/Iglesia.optimized.jpg";
 import freddyProfile from "./assets/El.optimized.jpg";
 import receptionImage from "./assets/Recepcion.optimized.jpg";
+import giftsImage from "./assets/Regalos lluvia de sobres transparent.png";
 import storyAdventure from "./assets/FyC 2.optimized.jpg";
 import storyFuture from "./assets/FyC 3.optimized.jpg";
 import storyMet from "./assets/FyC 1.optimized.jpg";
@@ -20,6 +22,14 @@ const forbiddenColors = [
 
 const ceremonyMaps = "https://www.google.com/maps/search/?api=1&query=2.113857991981589,-75.82555015466646";
 const receptionMaps = "https://www.google.com/maps/search/?api=1&query=2.1100777020088186,-75.82518778438562";
+const galleryImages = Object.entries(
+  import.meta.glob<string>("./assets/Galeria/*.{jpg,jpeg,png,webp}", {
+    eager: true,
+    import: "default",
+  }),
+)
+  .sort(([firstPath], [secondPath]) => firstPath.localeCompare(secondPath, "es", { numeric: true }))
+  .map(([, image]) => image);
 
 function getRemainingTime() {
   const diff = weddingDate.getTime() - Date.now();
@@ -383,6 +393,51 @@ function RsvpSection() {
   );
 }
 
+function GiftsSection() {
+  return (
+    <section className="giftsSection">
+      <SectionHeading title="Tu presencia es nuestro mejor regalo" />
+      <div className="giftsImage" data-reveal>
+        <img src={giftsImage} alt="Ilustración de lluvia de sobres" />
+      </div>
+      <p className="giftsText" data-reveal>
+        Si deseas acompañarnos con un detalle, agradeceremos tu generosidad en nuestra lluvia de sobres.
+      </p>
+    </section>
+  );
+}
+
+function GallerySection() {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  useEffect(() => {
+    if (galleryImages.length <= 1) {
+      return;
+    }
+
+    const timer = window.setInterval(() => {
+      setActiveIndex((currentIndex) => (currentIndex + 1) % galleryImages.length);
+    }, 2000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  return (
+    <section className="gallerySection">
+      <SectionHeading title="Galería de fotos" />
+      <div className="gallerySlider" aria-label="Galería de fotos de Freddy y Camila" data-reveal>
+        <div className="galleryTrack" style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
+          {galleryImages.map((image, index) => (
+            <figure className="gallerySlide" key={image}>
+              <img src={image} alt={`Foto ${index + 1} de Freddy y Camila`} loading={index === 0 ? "eager" : "lazy"} />
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function App() {
   useRevealAnimation();
 
@@ -462,9 +517,10 @@ function App() {
       </section>
 
       <section className="dressCodeSection" id="vestimenta">
-        <SectionHeading eyebrow="Código de vestimenta" title="Colores reservados">
-          Para conservar la armonía visual de la celebración, evita asistir con estos colores.
-        </SectionHeading>
+        <SectionHeading eyebrow="Código de vestimenta" title="Colores reservados" />
+        <div className="dressCodeImage" data-reveal>
+          <img src={dressCodeImage} alt="Código de vestimenta" />
+        </div>
         <div className="colorGrid">
           {forbiddenColors.map((color) => (
             <article className="colorChip" data-reveal key={color.name}>
@@ -474,6 +530,10 @@ function App() {
           ))}
         </div>
       </section>
+
+      <GiftsSection />
+
+      <GallerySection />
 
       <RsvpSection />
     </main>
