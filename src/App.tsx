@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import camilaProfile from "./assets/Ella.optimized.jpg";
 import dressCodeImage from "./assets/Cod Vestimenta transparent.png";
-import coupleHero from "./assets/Encabezado FyC.jpg";
+import coupleHero from "./assets/Encabezado FyC-DJvvQ7Gy.webp";
 import ceremonyImage from "./assets/Iglesia.optimized.jpg";
 import freddyProfile from "./assets/El.optimized.jpg";
 import receptionImage from "./assets/Recepcion.optimized.jpg";
@@ -409,6 +409,8 @@ function GiftsSection() {
 
 function GallerySection() {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
+  const sliderImages = galleryImages.length > 1 ? [...galleryImages, galleryImages[0]] : galleryImages;
 
   useEffect(() => {
     if (galleryImages.length <= 1) {
@@ -422,14 +424,30 @@ function GallerySection() {
     return () => window.clearInterval(timer);
   }, []);
 
+  function handleSliderTransitionEnd() {
+    if (activeIndex === galleryImages.length) {
+      setIsTransitioning(false);
+      setActiveIndex(0);
+      window.setTimeout(() => setIsTransitioning(true), 20);
+    }
+  }
+
   return (
     <section className="gallerySection">
       <SectionHeading title="Galería de fotos" />
       <div className="gallerySlider" aria-label="Galería de fotos de Freddy y Camila" data-reveal>
-        <div className="galleryTrack" style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
-          {galleryImages.map((image, index) => (
-            <figure className="gallerySlide" key={image}>
-              <img src={image} alt={`Foto ${index + 1} de Freddy y Camila`} loading={index === 0 ? "eager" : "lazy"} />
+        <div
+          className={`galleryTrack${isTransitioning ? "" : " no-transition"}`}
+          style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+          onTransitionEnd={handleSliderTransitionEnd}
+        >
+          {sliderImages.map((image, index) => (
+            <figure className="gallerySlide" key={`${image}-${index}`}>
+              <img
+                src={image}
+                alt={`Foto ${(index % galleryImages.length) + 1} de Freddy y Camila`}
+                loading={index === 0 ? "eager" : "lazy"}
+              />
             </figure>
           ))}
         </div>

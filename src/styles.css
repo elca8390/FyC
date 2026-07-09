@@ -927,6 +927,10 @@ h1 {
   will-change: transform;
 }
 
+.galleryTrack.no-transition {
+  transition: none;
+}
+
 .gallerySlide {
   flex: 0 0 100%;
   margin: 0;
@@ -1145,19 +1149,41 @@ h1 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .countdownLarge,
   .eventGrid,
   .attendanceOptions {
     grid-template-columns: 1fr;
+  }
+
+  .countdownLarge {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    max-width: 100%;
+  }
+
+  .countdownBox {
+    min-height: 82px;
+  }
+
+  .countdownBox strong {
+    font-size: clamp(2.05rem, 10vw, 3.2rem);
+  }
+
+  .countdownBox span {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
   }
 
   .introSection {
     grid-template-columns: 1fr;
   }
 
-  .coupleCards,
-  .colorGrid {
+  .coupleCards {
     grid-template-columns: 1fr;
+  }
+
+  .colorGrid {
+    grid-template-columns: repeat(3, minmax(0, 96px));
+    gap: 10px;
   }
 
   .storyTimeline::before {
@@ -1207,6 +1233,15 @@ h1 {
 
   .heroActions a {
     width: 100%;
+  }
+
+  .colorChip {
+    gap: 10px;
+  }
+
+  .colorChip span {
+    width: 46px;
+    height: 46px;
   }
 
   .coupleCards article,
