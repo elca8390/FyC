@@ -554,6 +554,16 @@ function App() {
       <GallerySection />
 
       <RsvpSection />
+
+      <footer className="siteFooter">
+        <p>© 2026 Freddy & Camila. Todos los derechos reservados.</p>
+        <p>
+          Elaborado por{" "}
+          <a href="https://ecoingenieria.co/" target="_blank" rel="noreferrer">
+            Ecoingeniería
+          </a>
+        </p>
+      </footer>
     </main>
   );
 }

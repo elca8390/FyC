@@ -1048,6 +1048,32 @@ h1 {
   font-weight: 700;
 }
 
+.siteFooter {
+  display: grid;
+  gap: 8px;
+  padding: 28px clamp(18px, 5vw, 80px);
+  border-top: 1px solid rgba(75, 62, 45, 0.12);
+  background: #2d2923;
+  color: rgba(255, 250, 242, 0.76);
+  text-align: center;
+}
+
+.siteFooter p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.siteFooter a {
+  color: #f2c978;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.siteFooter a:hover {
+  text-decoration: underline;
+}
+
 [data-reveal] {
   opacity: 0;
   transform: translateY(28px);
